@@ -35,9 +35,16 @@
       background-color: rgba(0, 0, 0, 0.8);
       box-shadow: 0 8px 24px rgba(0,0,0,0.6);
       margin-top: 20px;
-      display: none;
-      animation: fadeInBoard 1s ease forwards;
-      animation-delay: 2s;
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .calculator.visible {
+      visibility: visible;
+      opacity: 1;
+      transform: translateY(0);
     }
 
     #display {
@@ -111,8 +118,8 @@
 
     .top-label span {
       font-weight: bold;
-      color: #00f;
-      text-shadow: 0 0 10px cyan;
+      color: #fff;
+      text-shadow: 0 0 10px white;
     }
 
     #toggle-mode {
@@ -134,7 +141,7 @@
       font-weight: bold;
       text-align: center;
       margin-top: 60px;
-      animation: fadeOut 2s ease 2s forwards;
+      animation: fadeOut 2s ease 4s forwards;
       color: white;
       text-shadow: 0 0 12px magenta;
     }
@@ -142,11 +149,6 @@
     @keyframes fadeOut {
       0% { opacity: 1; }
       100% { opacity: 0; visibility: hidden; }
-    }
-
-    @keyframes fadeInBoard {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); display: block; }
     }
   </style>
 </head>
@@ -177,11 +179,11 @@
       <button onclick="append('-')">-</button>
       <button onclick="append('0')">0</button>
       <button onclick="append('.')">.</button>
-      <button onclick="toggleScientific()">Scientific</button>
+      <button onclick="calculate()">=</button>
       <button onclick="append('+')">+</button>
       <button onclick="clearDisplay()">C</button>
       <button onclick="backspace()">⌫</button>
-      <button onclick="calculate()" style="grid-column: span 2;">=</button>
+      <button onclick="toggleScientific()" style="grid-column: span 2;">Scientific</button>
     </div>
   </div>
 
@@ -195,7 +197,7 @@
       <button onclick="append('Math.pow(')">x^y</button>
       <button onclick="append('Math.PI')">π</button>
       <button onclick="append('Math.E')">e</button>
-      <button onclick="toggleScientific()" style="grid-column: span 2;">=</button>
+      <button onclick="calculate()" style="grid-column: span 2;">=</button>
     </div>
   </div>
 
@@ -230,7 +232,7 @@
 
     function toggleScientific() {
       const sci = document.getElementById('sci-calc');
-      sci.style.display = sci.style.display === 'none' ? 'block' : 'none';
+      sci.classList.toggle('visible');
     }
 
     const toggleBtn = document.getElementById('toggle-mode');
@@ -239,15 +241,13 @@
       toggleBtn.textContent = document.body.classList.contains('dark') ? '🌞' : '🌕';
     };
 
-    // Control visibility after welcome disappears
     window.onload = function () {
       setTimeout(() => {
         document.getElementById('welcome').style.display = 'none';
-        document.getElementById('main-calc').style.display = 'block';
+        document.getElementById('main-calc').classList.add('visible');
         document.getElementById('toggle-mode').style.display = 'block';
-      }, 4000);
+      }, 6000);
     };
   </script>
 </body>
-  </html>
-  
+</html>
